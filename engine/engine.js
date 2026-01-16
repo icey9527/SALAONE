@@ -378,7 +378,7 @@ btnAuto?.addEventListener("click", () => {
   setAutoMode(!autoMode);
 });
 btnHome?.addEventListener("click", () => {
-  const u = new URL("./", location.href);
+  const u = new URL(location.href);
   u.search = "";
   u.hash = "";
   location.href = u.toString();

@@ -108,7 +108,7 @@
     }
 
     function buildUrlForId(gameId) {
-      const url = new URL("./", location.href);
+      const url = new URL(location.href);
       url.search = "";
       url.hash = "";
       url.searchParams.set("id", gameId);
