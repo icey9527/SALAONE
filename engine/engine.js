@@ -120,8 +120,8 @@ function resolvePathsFromCfg(cfg) {
     const a = cfg.asset.replace(/^\/+|\/+$/g, "");
     const s = cfg.script.replace(/^\/+/, "");
     return {
-      assetBase: `data/${a}`,
-      scriptUrl: `data/${a}/${s}`,
+      assetBase: `./data/${a}`,
+      scriptUrl: `./data/${a}/${s}`,
     };
   }
 
