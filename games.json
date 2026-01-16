@@ -21,14 +21,14 @@
     {
       "id": "eden-cn",
       "title": "乐园-EDEN（中文）",
-      "asset": "eden",
+      "asset": "EDEN",
       "script": "BOOT_chs.txt",
       "icon": "EDEN.PNG"
     },
     {
       "id": "eden-jp",
       "title": "楽園",
-      "asset": "eden",
+      "asset": "EDEN",
       "script": "BOOT.txt",
       "icon": "EDEN.PNG",
       "ui": {
