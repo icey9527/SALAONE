@@ -1,0 +1,140 @@
+:root{
+  --stage-w: 960px;
+  --stage-h: 544px;
+  --chrome-w: 172px;
+  --chrome-gap: 12px;
+  --bg: #0b0f14;
+  --text: rgba(255,255,255,.92);
+  --paper: #f4e7b8;
+  --btn-border: #6a4b2f;
+  --btn-bg: #f8f0cd;
+  --btn-ink: #2c1d10;
+  --btn-shadow: rgba(0,0,0,.25);
+}
+
+html,body{height:100%}
+body{
+  margin:0;
+  background: radial-gradient(1200px 700px at 50% 35%, #121a24 0%, var(--bg) 60%, #05070a 100%);
+  color:var(--text);
+  font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+}
+
+#shell{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  box-sizing:border-box;
+}
+
+#stageWrap{
+  position:relative;
+  width: calc(var(--stage-w) + var(--chrome-gap) + var(--chrome-w));
+  height: var(--stage-h);
+  /* Center the 960x544 stage itself (chrome is to the right, outside the stage). */
+  transform: translateX(calc((var(--chrome-gap) + var(--chrome-w)) / 2));
+}
+
+#stage{
+  position:absolute;
+  left:0;
+  top:0;
+  width:var(--stage-w);
+  height:var(--stage-h);
+  outline:none;
+  background:#000;
+  overflow:hidden;
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    inset 0 0 0 1px rgba(255,255,255,.08);
+}
+
+#bg0{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  image-rendering:auto;
+}
+
+#fade{
+  position:absolute;
+  inset:0;
+  background:#fff;
+  opacity:0;
+  pointer-events:none;
+}
+
+#textArea{
+  position:absolute;
+  left:432px;
+  top:36px;
+  width:480px;
+  height:474px;
+  box-sizing:border-box;
+  padding:40px;
+  color:var(--vn-text-color, rgba(255,255,255,.95));
+  font-family: var(--vn-font-family, "SimHei", "Microsoft YaHei", sans-serif);
+  font-size: var(--vn-font-size, 24px);
+  line-height: var(--vn-line-height, 1.25);
+  text-shadow: var(--vn-shadow, 2px 2px 0 rgba(0,0,0,.6));
+  white-space:pre-wrap;
+  overflow:hidden;
+}
+
+#textArea .vnCh{
+  display:inline;
+  opacity:0;
+  animation: vnFadeIn var(--vn-fade-ms, 120ms) linear forwards;
+}
+
+@keyframes vnFadeIn{
+  from{ opacity:0; }
+  to{ opacity:1; }
+}
+
+#hitArea{
+  position:absolute;
+  inset:0;
+  cursor:pointer;
+  background:transparent;
+}
+
+#chrome{
+  position:absolute;
+  left: calc(var(--stage-w) + var(--chrome-gap));
+  top: 12px;
+  width: var(--chrome-w);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:stretch;
+  justify-content:flex-start;
+  padding:0;
+  box-sizing:border-box;
+  z-index:5;
+}
+
+.chromeBtn{
+  appearance:none;
+  border:2px solid var(--btn-border);
+  background:var(--btn-bg);
+  color:var(--btn-ink);
+  padding:10px 12px;
+  border-radius:0;
+  cursor:pointer;
+  font-size:13px;
+  box-shadow: 3px 3px 0 var(--btn-shadow);
+}
+.chromeBtn:hover{
+  background: #efe4b8;
+}
+.chromeBtn.danger{
+  border-color: #8a3a2a;
+}
+.chromeBtn.danger:hover{
+  background: #f3d6c9;
+}

@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VN Launcher</title>
+  <link rel="stylesheet" href="/engine/ui.css" />
+  <style>
+    :root{
+      --paper:#f4e7b8;
+      --paper2:#f8f0cd;
+      --ink:#2c1d10;
+      --border:#6a4b2f;
+      --shadow:rgba(0,0,0,.25);
+    }
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family: "Microsoft YaHei","Noto Sans SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+    .wrap{
+      max-width:980px;
+      margin:24px auto;
+      padding:0 16px 30px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(500px,1fr));
+      gap:14px;
+    }
+    .entry{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      background:var(--paper2);
+      border:2px solid var(--border);
+      box-shadow: 3px 3px 0 var(--shadow);
+      padding:10px;
+    }
+    .entry:focus{
+      outline:none;
+      box-shadow: 4px 4px 0 var(--shadow);
+    }
+    .thumb{
+      width:480px;
+      height:272px;
+      object-fit:cover;
+      display:block;
+      border:1px solid rgba(0,0,0,.35);
+      background:#fff;
+      margin:0 auto;
+    }
+    .name{
+      margin:10px 0 0;
+      font-size:14px;
+      font-weight:700;
+      text-align:center;
+    }
+    code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+    }
+
+    /* launcher/player toggle */
+    #player{ display:none; }
+    body.isPlayer #launcher{ display:none; }
+    body.isPlayer #player{ display:block; }
+  </style>
+</head>
+<body>
+  <div id="launcher">
+    <div class="wrap">
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div id="player">
+    <div id="shell">
+      <div id="stageWrap">
+        <div id="stage" tabindex="0">
+          <img id="bg0" alt="" />
+          <div id="fade"></div>
+          <div id="textArea"></div>
+          <div id="hitArea" title="点击继续"></div>
+        </div>
+        <div id="chrome">
+          <button id="btnAuto" class="chromeBtn">自动阅读</button>
+          <button id="btnHome" class="chromeBtn">返回主界面</button>
+          <button id="btnReset" class="chromeBtn danger">重新开始</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    const qs = new URLSearchParams(location.search);
+    const id = qs.get("id");
+
+    async function loadGames() {
+      const r = await fetch("./games.json", { cache: "no-store" });
+      if (!r.ok) throw new Error("games.json 加载失败: " + r.status);
+      const data = await r.json();
+      if (Array.isArray(data)) return { games: data, default: {} };
+      if (data && typeof data === "object" && Array.isArray(data.games)) return data;
+      throw new Error("games.json 格式错误：需要为数组或 { games: [] }");
+    }
+
+    function buildUrlForId(gameId) {
+      const url = new URL("./", location.href);
+      url.search = "";
+      url.hash = "";
+      url.searchParams.set("id", gameId);
+      return url.toString();
+    }
+
+    function iconUrl(g) {
+      // New schema: icon is a filename under data/icon/
+      if (g && typeof g.icon === "string") return "data/icon/" + g.icon.replace(/^\/+/, "");
+      return "";
+    }
+
+    function renderLauncher(games) {
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+      for (const g of games) {
+        const a = document.createElement("a");
+        a.className = "entry";
+        a.href = buildUrlForId(g.id);
+        a.title = g.title || g.id;
+        a.innerHTML = `
+          <img class="thumb" alt="" src="${iconUrl(g)}">
+          <div class="name">${g.title || g.id}</div>
+        `;
+        grid.appendChild(a);
+      }
+    }
+
+    async function boot() {
+      if (id) {
+        document.body.classList.add("isPlayer");
+        await import("/engine/engine.js");
+        return;
+      }
+
+      const data = await loadGames();
+      renderLauncher(data.games || []);
+    }
+
+    boot().catch(err => {
+      console.error(err);
+      const grid = document.getElementById("grid");
+      if (grid) grid.innerHTML = "<div>启动器出错：<code>" + String(err && (err.message || err)) + "</code></div>";
+      const textArea = document.getElementById("textArea");
+      if (textArea) textArea.textContent = String(err && (err.stack || err.message || err));
+    });
+  </script>
+</body>
+</html>

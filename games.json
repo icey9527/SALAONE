@@ -1,0 +1,52 @@
+{
+  "default": {
+    "ui": {
+      "fontFamily": "黑体",
+      "fontSizePx": 30,
+      "lineHeight": 1.25,
+      "textColor": "#785a00",
+      "shadowColor": "#ffffff",
+      "shadowOffsetPx": 2,
+      "typewriterMs": 200,
+      "typewriterCharMs": 20,
+      "autoRead": {
+        "baseMs": 1400,
+        "perCharMs": 110,
+        "minMs": 3200,
+        "maxMs": 9000
+      }
+    }
+  },
+  "games": [
+    {
+      "id": "eden-cn",
+      "title": "乐园-EDEN（中文）",
+      "asset": "eden",
+      "script": "BOOT_chs.txt",
+      "icon": "EDEN.PNG"
+    },
+    {
+      "id": "eden-jp",
+      "title": "楽園",
+      "asset": "eden",
+      "script": "BOOT.txt",
+      "icon": "EDEN.PNG",
+      "ui": {
+        "fontFamily": "MS ゴシック"
+      }
+    },
+    {
+      "id": "RS-jp",
+      "title": "僕の心は雨のち晴れ",
+      "asset": "RS",
+      "script": "BOOT.txt",
+      "icon": "RS.PNG",
+      "ui": {
+        "fontFamily": "MS ゴシック",
+        "textColor": "#ffffff",
+        "shadowColor": "#000000"
+      }
+    }    
+  ]
+}
+
