@@ -71,9 +71,9 @@ body{
 #textArea{
   position:absolute;
   left:432px;
-  top:36px;
+  top:0px;
   width:480px;
-  height:474px;
+  height:500px;
   box-sizing:border-box;
   padding:40px;
   color:var(--vn-text-color, rgba(255,255,255,.95));
@@ -138,3 +138,10 @@ body{
 .chromeBtn.danger:hover{
   background: #f3d6c9;
 }
+
+.chromeBtn.autoOn{
+  background:#b01010;
+  color:#ffffff;
+  border-color:#5a0000;
+}
+

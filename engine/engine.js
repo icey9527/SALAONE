@@ -218,7 +218,7 @@ async function resolveImageUrl(logicalPath) {
 
 async function resolveAudioUrl(logicalPath) {
   const base = assetPath(logicalPath);
-  const exts = [".wav", ".ogg", ".mp3"];
+  const exts = [".ogg", ".wav", ".mp3"];
   const tries = exts.map(ext => base + ext);
   for (const u of tries) {
     if (await probeUrl(u)) return u;
@@ -326,6 +326,8 @@ function waitForUser() {
       charsSincePause = 0;
       if (autoTimer) clearTimeout(autoTimer);
       autoTimer = setTimeout(() => {
+        // Reset typewriter timing per-page to avoid long blank delays.
+        typewriterIndex = 0;
         if (resumeWait) resumeWait();
       }, ms);
     }
@@ -334,6 +336,8 @@ function waitForUser() {
 
 function continueIfWaiting() {
   resumePendingBgmIfNeeded();
+  // Reset typewriter timing per-page to avoid long blank delays.
+  typewriterIndex = 0;
   if (resumeWait) resumeWait();
 }
 
@@ -362,6 +366,7 @@ function computeAutoDelayMs(charCount) {
 function setAutoMode(on) {
   if (!autoCfg) return;
   autoMode = !!on;
+  if (btnAuto) btnAuto.classList.toggle("autoOn", autoMode);
   if (autoTimer) {
     clearTimeout(autoTimer);
     autoTimer = null;
@@ -371,6 +376,7 @@ function setAutoMode(on) {
     const ms = computeAutoDelayMs(charsSincePause);
     charsSincePause = 0;
     autoTimer = setTimeout(() => {
+      typewriterIndex = 0;
       if (resumeWait) resumeWait();
     }, ms);
   }
