@@ -127,11 +127,14 @@ function resolvePathsFromCfg(cfg) {
 
   // Legacy compatibility
   if (cfg && typeof cfg.assetBase === "string" && typeof cfg.scriptUrl === "string") {
+    const ab = cfg.assetBase.replace(/^\/+|\/+$/g, "");
+    const su = cfg.scriptUrl.replace(/^\/+/, "");
     return {
-      assetBase: cfg.assetBase.replace(/\/+$/, ""),
-      scriptUrl: cfg.scriptUrl,
+      assetBase: ab.startsWith(".") ? ab : "./" + ab,
+      scriptUrl: su.startsWith(".") ? su : "./" + su,
     };
   }
+
 
   return { assetBase: "", scriptUrl: null };
 }
